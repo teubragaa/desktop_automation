@@ -1,42 +1,42 @@
 import subprocess
-import pyautogui as pg
-import pygetwindow as gw
 import time
 import logging
+import pyautogui as pg
+import pygetwindow as gw
 from config import CAMINHO_ATALHO
 
-def iniciar_chamador():
-    logging.info("Abrindo o atalho...")
+def iniciar_chamador(timeout=30):
+    logging.info("Disparando abertura do atalho...")
     
     comando = f'start "" "{CAMINHO_ATALHO}"'
     subprocess.Popen(comando, shell=True)
     
-    time.sleep(5)
     tempo_esperado = 0
+    intervalo = 2
     
-    while tempo_esperado < 30:
+    while tempo_esperado < timeout:
         janelas = gw.getWindowsWithTitle("Abrir Arquivo - Aviso de Segurança")
         
         if janelas:
-            logging.info("Janela de segurança encontrada.")
+            logging.info("Janela de segurança do Windows detectada.")
             janela = janelas[0]
             
             try:
                 janela.activate()
-            except:
-                pass 
+            except Exception as e:
+                logging.warning(f"Aviso ao focar janela de segurança: {e}")
             
-            time.sleep(2)
+            time.sleep(1.5)
             
-            logging.info("Confirmando abertura... Pressionando Alt + E.")
-            pg.hotkey('alt', 'e')
+            logging.info("Confirmando abertura com Alt + E...")
+            pg.hotkey("alt", "e")
             
             time.sleep(3)
-            logging.info("Processo concluído. Aplicativo aberto.")
-            return True 
+            logging.info("Comando de abertura enviado com sucesso.")
+            return True
             
-        time.sleep(2)
-        tempo_esperado += 2
+        time.sleep(intervalo)
+        tempo_esperado += intervalo
         
-    logging.error("A janela de segurança não apareceu no tempo limite.")
-    raise Exception("Timeout na abertura do aplicativo.")
+    logging.error("A janela de segurança não apareceu dentro do tempo limite.")
+    raise TimeoutError("Tempo limite esgotado ao aguardar confirmação de segurança.")
