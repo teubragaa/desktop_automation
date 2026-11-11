@@ -5,15 +5,30 @@ import pyautogui as pg
 def realizar_finalizacao():
     logging.info("Confirmando a conexão com êxito...")
     
-    # Aguarda 1 segundo por segurança e dá o Enter no botão OK
+    # 1. Confirma o pop-up inicial (OK)
     time.sleep(1)
     pg.press("enter")
     logging.info("Janela confirmada.")
 
-    # Aguarda o pop-up fechar e o foco voltar para a tela
+    # 2. Aciona o botão Importar (Alt + I)
     time.sleep(1.5)
-
-    # Aciona o botão Importar pelo atalho da letra 'i'
     logging.info("Acionando o botão 'Importar'...")
     pg.hotkey("alt", "i")
-    logging.info("Botão 'Importar' acionado com sucesso.")
+    
+    # 3. Aguarda abrir a janelinha de "Parâmetro" e ajusta o mês
+    time.sleep(1.5)
+    logging.info("Ajustando o mês para o anterior (seta direita + seta baixo)...")
+    pg.press("right")
+    time.sleep(0.3)
+    pg.press("down")
+    time.sleep(0.5)
+
+    # 4. Aciona o botão "Confirmar" (Alt + O)
+    logging.info("Confirmando a importação...")
+    pg.hotkey("alt", "o")
+
+    # 5. Aguarda a mensagem final e dá Enter no último "OK"
+    time.sleep(3)
+    logging.info("Confirmando o 'OK' final...")
+    pg.press("enter")
+    logging.info("Importação concluída e confirmada com sucesso.")
