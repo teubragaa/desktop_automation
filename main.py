@@ -11,6 +11,7 @@ from etapa2_login import realizar_login
 from etapa3_importacao import realizar_importacao
 from etapa4_conexao import realizar_conexao
 from etapa5_finalizacao import realizar_importacao_final
+from etapa6_conclusao import aguardar_conclusao_importacao
 
 # Define o diretório base para gravação do log (compatível com script .py e executável .exe)
 if getattr(sys, "frozen", False):
@@ -75,13 +76,17 @@ def orquestrador():
         logging.info("[ETAPA 4] Conexão concluída.")
         time.sleep(2)
 
-        # Etapa 5: Marcação de parâmetro, ajuste de período e importação final
-        logging.info("[ETAPA 5] Iniciando importação final...")
+        # Etapa 5: Marcação de parâmetro, ajuste de período e disparo da importação
+        logging.info("[ETAPA 5] Iniciando disparo da importação...")
         realizar_importacao_final()
-        logging.info("[ETAPA 5] Importação final concluída.")
+        logging.info("[ETAPA 5] Importação disparada.")
 
-        logging.info("[SUCESSO] Fluxo completo finalizado sem erros.")
+        # Etapa 6: Espera ativa até a mensagem 'Information' aparecer e confirma OK
+        logging.info("[ETAPA 6] Aguardando conclusão da importação...")
+        aguardar_conclusao_importacao(timeout_minutos=10)
+        logging.info("[ETAPA 6] Conclusão confirmada.")
 
+  
     except Exception as e:
         logging.error(f"[FALHA] Processo interrompido: {e}")
         sys.exit(1)
