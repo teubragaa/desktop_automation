@@ -18,7 +18,7 @@ def iniciar_chamador(timeout=60, intervalo=3):
     comando = f'start "" "{CAMINHO_ATALHO}"'
     subprocess.Popen(comando, shell=True)
     
-    # Respiro inicial para o Windows processar o comando e montar a janela na tela
+    # Tempo inicial para o Windows processar o comando e montar a janela na tela
     time.sleep(3)
     
     inicio = time.monotonic()
@@ -43,7 +43,7 @@ def iniciar_chamador(timeout=60, intervalo=3):
                 logging.info("Confirmando abertura com Alt + E...")
                 pg.hotkey("alt", "e")
                 
-                # Pausa ampla para o popup fechar e o executável começar a carregar na rede
+                # Popup fechar e o executável começar a carregar na rede
                 time.sleep(5)
                 
                 if not gw.getWindowsWithTitle(TITULO_SEGURANCA):
