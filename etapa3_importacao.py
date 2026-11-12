@@ -95,28 +95,5 @@ def realizar_importacao(timeout=60):
         espera_pos=5,  # Pausa ampla para abertura e renderização da tela modal
     )
 
-    # 4. Pega a tela modal 'Importação Internet'
-    logging.info("Capturando janela modal 'Importação Internet'...")
-    janela_modal = obter_janela(timeout=timeout)
-    time.sleep(3)
-
-    # 5. Clica no botão Conexão
-    clicar_proporcional(
-        janela=janela_modal,
-        perc_x=0.422,
-        perc_y=0.233,
-        mensagem="Abrindo menu 'Conexão ▾'...",
-        espera_pos=3,
-    )
-
-    # 6. Clica na opção Servidor 2
-    clicar_proporcional(
-        janela=janela_modal,
-        perc_x=0.422,
-        perc_y=0.340,
-        mensagem="Selecionando 'Servidor 2'...",
-        espera_pos=5,  # Pausa final para garantir o disparo da carga antes de encerrar
-    )
-
-    logging.info("Comando de carga no Servidor 2 disparado com sucesso.")
+    logging.info("Tela de 'Importação Internet' aberta com sucesso.")
     return True
