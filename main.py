@@ -10,10 +10,9 @@ from etapa1_abertura import iniciar_chamador
 from etapa2_login import realizar_login
 from etapa3_importacao import realizar_importacao
 from etapa4_conexao import realizar_conexao
-from etapa5_importacao import realizar_importacao_final
+from etapa5_finalizacao import realizar_importacao_final
 
-
-# Garante que o log seja salvo na mesma pasta do .exe ou do script main.py
+# Define o diretório base para gravação do log (compatível com script .py e executável .exe)
 if getattr(sys, "frozen", False):
     PASTA_BASE = os.path.dirname(sys.executable)
 else:
@@ -21,7 +20,7 @@ else:
 
 CAMINHO_LOG = os.path.join(PASTA_BASE, "rpa_execucao.log")
 
-# Configuração de logs simples
+# Configuração global de logs
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -34,8 +33,9 @@ logging.basicConfig(
 pg.FAILSAFE = False
 pg.PAUSE = 1.0
 
+
 def configurar_dpi_windows():
-    """Garante que a escala de vídeo do Windows não desalinhe os cliques."""
+    """Configura a aplicação como DPI-Aware no Windows para evitar distorção de coordenadas."""
     try:
         ctypes.windll.shcore.SetProcessDpiAwareness(2)
     except Exception:
@@ -44,8 +44,10 @@ def configurar_dpi_windows():
         except Exception:
             pass
 
+
 def orquestrador():
-    configurar_dpi_windows()   
+    """Orquestra a execução sequencial das 5 etapas da automação no Spiderware."""
+    configurar_dpi_windows()
     logging.info("[INÍCIO] Execução da Automação - Spiderware")
 
     try:
@@ -61,18 +63,19 @@ def orquestrador():
         logging.info("[ETAPA 2] Login realizado.")
         time.sleep(3)
 
-        # Etapa 3: Navegação
-        logging.info("[ETAPA 3] Iniciando processo de importação de dados...")
+        # Etapa 3: Navegação até o módulo de importação
+        logging.info("[ETAPA 3] Acessando módulo 'Importação Internet'...")
         realizar_importacao()
-        logging.info("[ETAPA 3] Importação concluída.")
+        logging.info("[ETAPA 3] Módulo aberto.")
         time.sleep(3)
 
-        # Etapa 4: Desmarca requerimento e conecta no Servidor 2
+        # Etapa 4: Desmarcação preventiva e conexão no Servidor 2
         logging.info("[ETAPA 4] Iniciando conexão com Servidor 2...")
         realizar_conexao()
         logging.info("[ETAPA 4] Conexão concluída.")
+        time.sleep(2)
 
-        # Etapa 5: Importação Final
+        # Etapa 5: Marcação de parâmetro, ajuste de período e importação final
         logging.info("[ETAPA 5] Iniciando importação final...")
         realizar_importacao_final()
         logging.info("[ETAPA 5] Importação final concluída.")
