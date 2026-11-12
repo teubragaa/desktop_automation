@@ -9,7 +9,9 @@ from config import USUARIO_APP, SENHA_APP
 from etapa1_abertura import iniciar_chamador
 from etapa2_login import realizar_login
 from etapa3_importacao import realizar_importacao
-from etapa4_finalizar import realizar_finalizacao
+from etapa4_conexao import realizar_conexao
+from etapa5_importacao import realizar_importacao_final
+
 
 # Garante que o log seja salvo na mesma pasta do .exe ou do script main.py
 if getattr(sys, "frozen", False):
@@ -59,16 +61,21 @@ def orquestrador():
         logging.info("[ETAPA 2] Login realizado.")
         time.sleep(3)
 
-        # Etapa 3: Navegação e Importação
+        # Etapa 3: Navegação
         logging.info("[ETAPA 3] Iniciando processo de importação de dados...")
         realizar_importacao()
         logging.info("[ETAPA 3] Importação concluída.")
         time.sleep(3)
 
-        # Etapa 4: Finalização
-        logging.info("[ETAPA 4] Iniciando finalização do processo...")
-        realizar_finalizacao()
-        logging.info("[ETAPA 4] Finalização concluída.")
+        # Etapa 4: Desmarca requerimento e conecta no Servidor 2
+        logging.info("[ETAPA 4] Iniciando conexão com Servidor 2...")
+        realizar_conexao()
+        logging.info("[ETAPA 4] Conexão concluída.")
+
+        # Etapa 5: Importação Final
+        logging.info("[ETAPA 5] Iniciando importação final...")
+        realizar_importacao_final()
+        logging.info("[ETAPA 5] Importação final concluída.")
 
         logging.info("[SUCESSO] Fluxo completo finalizado sem erros.")
 
